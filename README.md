@@ -11,7 +11,7 @@ A lightweight toolkit for composable Go configuration using typed functional opt
 
 ## 🚀 Getting Started
 
-### Define your options struct
+### Define your options struct:
 
 ```go
 package mypkg
