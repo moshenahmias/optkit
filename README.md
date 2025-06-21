@@ -40,7 +40,7 @@ func init() {
 }
 
 func Options() MyOptions {
-    return *options
+    return options
 }
 ```
 
