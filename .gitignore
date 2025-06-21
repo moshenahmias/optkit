@@ -1,0 +1,25 @@
+# Go build output
+.vscode/
+bin/
+build/
+dist/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go vendor directory
+vendor/
+
+# Go test binary
+*.test
+
+# Go coverage files
+*.out
+
+# Go modules cache
+go.sum
+
+# Go workspace file
+go.work
+go.work.sum
