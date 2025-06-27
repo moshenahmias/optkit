@@ -35,8 +35,12 @@ import (
 	"github.com/moshenahmias/optkit"
 )
 
+var (
+    options MyOptions
+)
+
 func init() {
-    options := optkit.Init[MyOptions]()
+    options = optkit.Init[MyOptions]()
 }
 
 func Options() MyOptions {
@@ -53,14 +57,14 @@ import (
 	"github.com/moshenahmias/optkit"
 )
 
-func Function(options ...optkit.Option[MyOptions]) MyOptions {
+func Function(options ...optkit.Option[MyOptions]) {
     opts := optkit.Build(options...)
 
     foo := optkit.Get[int](opts, "foo")  // default: 0
     bar := optkit.GetWithDefault(opts, "bar", "!!!") // default: "!!!"
 
     // with defaults:
-    opts := optkit.BuildWithDefaults(optkit.Options{foo: 10}, options...)
+    opts := optkit.BuildWithDefaults(optkit.Options{"foo": 10}, options...)
 
     foo := optkit.Get[int](opts, "foo")  // default: 10
     bar := optkit.Get[string](opts, "bar", "") // default: ""
@@ -69,8 +73,8 @@ func Function(options ...optkit.Option[MyOptions]) MyOptions {
     print(bar)
 }
 
-func Function2(options ...optkit.Option[MyOptions]) MyOptions {
-    opts := optkit.BuildWithDefaults(optkit.Options{foo: 10}, options...)
+func Function2(options ...optkit.Option[MyOptions]) {
+    opts := optkit.BuildWithDefaults(optkit.Options{"foo": 10}, options...)
 
     foo := optkit.Get[int](opts, "foo")  // default: 10
     bar := optkit.Get[string](opts, "bar") // default: ""
@@ -101,4 +105,36 @@ func main() {
     // 20 (default + 10)
     // Hello
 }
+```
+
+## 🧩 Multi-Value Fields (Field2 to Field6)
+
+The optkit package supports type-safe functional options that can hold multiple values under a single field key:
+
+```go
+type Config struct {
+    Limits optkit.Field2[int, string, Config]
+}
+
+config := optkit.Init[Config]()
+
+opts := optkit.Build(
+    config.Limits.Set(42, "max"),
+)
+
+min, label := optkit.Get2[int, string](opts, "Limits")
+
+fmt.Println(min, label) // Output: 42 max
+```
+
+You can also use .Replace() to modify both values in-place:
+
+```go
+opts = optkit.Build(
+    config.Limits.Set(10, "low"),
+    config.Limits.Replace(func(i *int, s *string) {
+        *i = *i * 2
+        *s = strings.ToUpper(*s)
+    }),
+)
 ```
