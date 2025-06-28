@@ -36,12 +36,8 @@ import (
 )
 
 var (
-    options MyOptions
-)
-
-func init() {
     options = optkit.Init[MyOptions]()
-}
+)
 
 func Options() MyOptions {
     return options
