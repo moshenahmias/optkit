@@ -38,12 +38,7 @@ func (f Field2[T0, T1, S]) Set(v0 T0, v1 T1) Option[S] {
 // and updates the map with the modified values.
 func (f Field2[T0, T1, S]) Replace(fn func(*T0, *T1)) Option[S] {
 	return Option[S](func(m Options) {
-		s := Get[[]any](m, f.id)
-		if len(s) != 2 {
-			return // optionally log or panic here for invalid state
-		}
-		v0, _ := s[0].(T0)
-		v1, _ := s[1].(T1)
+		v0, v1 := Get2[T0, T1](m, f.id)
 		fn(&v0, &v1)
 		m[f.id] = []any{v0, v1}
 	})
@@ -66,13 +61,7 @@ func (f Field3[T0, T1, T2, S]) Set(v0 T0, v1 T1, v2 T2) Option[S] {
 // then updates the options map with the new values.
 func (f Field3[T0, T1, T2, S]) Replace(fn func(*T0, *T1, *T2)) Option[S] {
 	return Option[S](func(m Options) {
-		s := Get[[]any](m, f.id)
-		if len(s) != 3 {
-			return
-		}
-		v0, _ := s[0].(T0)
-		v1, _ := s[1].(T1)
-		v2, _ := s[2].(T2)
+		v0, v1, v2 := Get3[T0, T1, T2](m, f.id)
 		fn(&v0, &v1, &v2)
 		m[f.id] = []any{v0, v1, v2}
 	})
@@ -94,14 +83,7 @@ func (f Field4[T0, T1, T2, T3, S]) Set(v0 T0, v1 T1, v2 T2, v3 T3) Option[S] {
 // Replace allows in-place modification of the stored values using the provided function.
 func (f Field4[T0, T1, T2, T3, S]) Replace(fn func(*T0, *T1, *T2, *T3)) Option[S] {
 	return Option[S](func(m Options) {
-		s := Get[[]any](m, f.id)
-		if len(s) != 4 {
-			return
-		}
-		v0, _ := s[0].(T0)
-		v1, _ := s[1].(T1)
-		v2, _ := s[2].(T2)
-		v3, _ := s[3].(T3)
+		v0, v1, v2, v3 := Get4[T0, T1, T2, T3](m, f.id)
 		fn(&v0, &v1, &v2, &v3)
 		m[f.id] = []any{v0, v1, v2, v3}
 	})
@@ -122,15 +104,7 @@ func (f Field5[T0, T1, T2, T3, T4, S]) Set(v0 T0, v1 T1, v2 T2, v3 T3, v4 T4) Op
 // Replace lets the user mutate the stored five values directly.
 func (f Field5[T0, T1, T2, T3, T4, S]) Replace(fn func(*T0, *T1, *T2, *T3, *T4)) Option[S] {
 	return Option[S](func(m Options) {
-		s := Get[[]any](m, f.id)
-		if len(s) != 5 {
-			return
-		}
-		v0, _ := s[0].(T0)
-		v1, _ := s[1].(T1)
-		v2, _ := s[2].(T2)
-		v3, _ := s[3].(T3)
-		v4, _ := s[4].(T4)
+		v0, v1, v2, v3, v4 := Get5[T0, T1, T2, T3, T4](m, f.id)
 		fn(&v0, &v1, &v2, &v3, &v4)
 		m[f.id] = []any{v0, v1, v2, v3, v4}
 	})
@@ -151,16 +125,7 @@ func (f Field6[T0, T1, T2, T3, T4, T5, S]) Set(v0 T0, v1 T1, v2 T2, v3 T3, v4 T4
 // Replace allows modification of the six stored values using the supplied function.
 func (f Field6[T0, T1, T2, T3, T4, T5, S]) Replace(fn func(*T0, *T1, *T2, *T3, *T4, *T5)) Option[S] {
 	return Option[S](func(m Options) {
-		s := Get[[]any](m, f.id)
-		if len(s) != 6 {
-			return
-		}
-		v0, _ := s[0].(T0)
-		v1, _ := s[1].(T1)
-		v2, _ := s[2].(T2)
-		v3, _ := s[3].(T3)
-		v4, _ := s[4].(T4)
-		v5, _ := s[5].(T5)
+		v0, v1, v2, v3, v4, v5 := Get6[T0, T1, T2, T3, T4, T5](m, f.id)
 		fn(&v0, &v1, &v2, &v3, &v4, &v5)
 		m[f.id] = []any{v0, v1, v2, v3, v4, v5}
 	})

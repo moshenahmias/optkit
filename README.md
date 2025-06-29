@@ -103,7 +103,7 @@ func main() {
 }
 ```
 
-## 🧩 Multi-Value Fields (Field2 to Field6)
+### 🧩 Multi-Value Fields (Field2 to Field6)
 
 The optkit package supports type-safe functional options that can hold multiple values under a single field key:
 
@@ -133,4 +133,42 @@ opts = optkit.Build(
         *s = strings.ToUpper(*s)
     }),
 )
+```
+
+### 🌟 Vars
+
+OptKit also exposes a lower-level typed API using Var, Var2, ..., Var6 types. These give you direct, generic access to the same composable option pattern without needing to bind them to struct fields, but you do need to bind them to some type defined in your package - the second type parameter S is exactly what anchors them to a particular context or package. That type parameter acts as a "scope tag", ensuring type isolation across packages and uses.
+
+```go
+package mypkg
+
+type FuncThreeOptions struct{}
+type SomeOtherOptions struct{}
+
+const ( 
+    Foo optkit.Var[int, FuncThreeOptions] = "foo"
+    Bar optkit.Var[string, FuncThreeOptions] = "bar"
+    ... optkit.Var2[..., ..., SomeOtherOptions] = "..." // Var2
+    ... optkit.Var6[..., ..., ..., ..., ..., ..., SomeOtherOptions] = "..." // Var6
+)
+
+func Function3(options ...optkit.Option[FuncThreeOptions]) {
+    opts := optkit.Build(options...)
+
+    foo := optkit.Get[int](opts, "foo")  // default: 0
+    bar := optkit.GetWithDefault(opts, "bar", "!!!") // default: "!!!"
+
+    print(foo)
+    print(bar)
+}
+```
+
+Then:
+
+```go
+func main() {
+    mypkg.Function3(mypkg.Foo.Set(42), mypkg.Bar.Set("Hello"))
+    // 42
+    // Hello
+}
 ```
