@@ -95,8 +95,8 @@ func main() {
     // Hello
 
     mypkg.Function2(mypkg.Options().Bar.Set("Hello"), mypkg.Options().Foo.Replace(func(v *int) {
-		*v = *v + 10
-	}))
+        *v = *v + 10
+    }))
 
     // 20 (default + 10)
     // Hello
